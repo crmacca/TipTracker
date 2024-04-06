@@ -1,0 +1,87 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String           @id @default(uuid())
+  username         String           @unique
+  passwordHash     String
+  groupMemberships GroupMembership[]  // Many-to-many relationship with Group
+  gameMemberships  GameMembership[]   // Many-to-many relationship with Game
+  tagsAsTagger     Tag[]             @relation("Tagger")
+  tagsAsTaggee     Tag[]             @relation("Taggee")
+}
+
+model Group {
+  id           String            @id @default(uuid())
+  name         String
+  members      GroupMembership[]  // Many-to-many relationship with User
+  games        Game[]             @relation("GroupGames")
+  activeGameId String?            @map("active_game_id") // Nullable if no active game
+}
+
+model GroupMembership {
+  userId   String
+  groupId  String
+  joinedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id])
+  group    Group    @relation(fields: [groupId], references: [id])
+
+  @@id([userId, groupId])
+  @@unique([userId, groupId])
+  @@index([userId], name: "GroupMembership_userId_fkey")
+  @@index([groupId], name: "GroupMembership_groupId_fkey")
+}
+
+model Game {
+  id              String           @id @default(uuid())
+  gameMemberships GameMembership[] // Many-to-many relationship with User
+  gameStatus      String           // Can be 'waiting', 'active', 'completed'
+  tags            Tag[]
+  group           Group            @relation("GroupGames", fields: [groupId], references: [id])
+  groupId         String
+  currentTaggerId String?          // Optional, links directly to the current tagger
+
+  @@index([gameStatus], name: "index_on_gameStatus")
+  @@index([groupId], name: "index_on_groupId")
+}
+
+model GameMembership {
+  userId   String
+  gameId   String
+  isActive Boolean @default(true)
+  joinedAt DateTime @default(now())
+  user     User     @relation(fields: [userId], references: [id])
+  game     Game     @relation(fields: [gameId], references: [id])
+
+  @@id([userId, gameId])
+  @@unique([userId, gameId])
+  @@index([userId], name: "GameMembership_userId_fkey")
+  @@index([gameId], name: "GameMembership_gameId_fkey")
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  taggerId  String
+  taggeeId  String
+  timestamp DateTime @default(now())
+  game      Game     @relation(fields: [gameId], references: [id])
+  gameId    String
+  tagger    User     @relation("Tagger", fields: [taggerId], references: [id])
+  taggee    User     @relation("Taggee", fields: [taggeeId], references: [id])
+
+  @@index([taggerId, taggeeId], name: "index_on_tagger_taggee")
+}
+
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   @db.LongText
+  expiresAt DateTime
+}
