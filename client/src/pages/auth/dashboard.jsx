@@ -33,27 +33,30 @@ const DashboardPage = ({user}) => {
                         <LinearProgress color="primary" />
                     </div>
                 ) : (
-                    <div className="w-full flex items-center min-h-screen">
+                    <div className="w-full flex flex-col py-2 items-center min-h-screen">
 
-
+                        <div className="flex gap-2 items-center justify-start">
+                            <img src="logoSM.png" className="rounded-2xl w-20" />
+                            <div className="flex flex-col text-start items-start justify-start">
+                                <h1 className="text-white font-inter font-semibold text-3xl">TipTracker</h1>
+                                <h1 className="text-white font-inter font-regular text-1xl">Hello @{user.username}</h1>
+                            </div>
+                        </div> 
 
                         <div className="fixed w-full bottom-0 left-0">
                             <div className="max-w-4xl w-full m-auto">
-
-
-                            <BottomNavigation
-                                sx={{background: 'none', fontFamily: 'Inter, sans-serif'}}
-                                showLabels
-                                value={page}
-                                onChange={(_, newValue) => {
-                                    setPage(newValue);
-                                }}
-                            >
-                                <BottomNavigationAction label="Groups" icon={<Groups2Icon />} />
-                                <BottomNavigationAction label="Options" icon={<DisplaySettingsIcon />} />
-                                <BottomNavigationAction label="Logout" icon={<LockIcon />} />
-                            </BottomNavigation>
-
+                                <BottomNavigation
+                                    sx={{background: 'none', fontFamily: 'Inter, sans-serif'}}
+                                    showLabels
+                                    value={page}
+                                    onChange={(_, newValue) => {
+                                        setPage(newValue);
+                                    }}
+                                >
+                                    <BottomNavigationAction label="Groups" icon={<Groups2Icon />} />
+                                    <BottomNavigationAction label="Options" icon={<DisplaySettingsIcon />} />
+                                    <BottomNavigationAction label="Logout" icon={<LockIcon />} />
+                                </BottomNavigation>
                             </div>
                         </div>
                     </div>
