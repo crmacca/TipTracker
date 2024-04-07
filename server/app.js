@@ -14,7 +14,7 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(cors({
-  origin: 'http://localhost:3000', // Replace with your frontend origin
+  origin: 'http://192.168.1.25:3000', // Replace with your frontend origin
   methods: ['GET', 'POST', 'DELETE', 'PUT', 'PATCH'],
   allowedHeaders: ['Content-Type', 'CSRF-Token'], // Add 'CSRF-Token' to allowed headers
   credentials: true,

@@ -13,7 +13,7 @@ router.get('/user', (req, res) => {
   }
 });
 
-router.post("/login", checkNotAuthenticated, (req, res, next) => {
+router.post("/login", (req, res, next) => {
   if (!req.body.username || !req.body.password) {
     res.sendStatus(400);
     return;
@@ -21,7 +21,7 @@ router.post("/login", checkNotAuthenticated, (req, res, next) => {
 
   passport.authenticate("local", (err, user, info) => {
     if (err) throw err;
-    if (!user) return res.send("No match found.");
+    if (!user) return res.status(400).send("NO_CREDENTIAL_COMBO_FOUND");
     else {
       req.logIn(user, (err) => {
         if (err) throw err;
@@ -43,7 +43,7 @@ router.delete("/logout", (req, res) => {
   }
 });
 
-router.post('/signup', async (req, res) => {
+router.post('/signup', checkNotAuthenticated, async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -51,7 +51,7 @@ router.post('/signup', async (req, res) => {
   }
 
   if (username.length > 30) return res.status(400).send('USERNAME_TOO_LONG')
-  if (password.length < 8) return res.status(400).send('PASSWORD_TOO_SHORT')
+  if (password.length < 4) return res.status(400).send('PASSWORD_TOO_SHORT')
   if (password.length > 300) return res.status(400).send('PASSWORD_TOO_LONG')
 
   try {
@@ -65,7 +65,7 @@ router.post('/signup', async (req, res) => {
     const newUser = await prisma.user.create({
       data: {
         username,
-        password: hashedPassword,
+        passwordHash: hashedPassword,
       }
     });
 

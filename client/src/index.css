@@ -11,10 +11,14 @@ body {
 }
 
 .smLogo {
-    width: 30rem;
+    width: 27rem;
 }
 
-button {
+.bgMain {
+    background-color: rgb(9, 14, 16);
+}
+
+.button {
     background: linear-gradient(rgb(10, 102, 194), rgb(6, 64, 121)) rgb(9, 89, 170);
     color: white;
     cursor: pointer;
@@ -31,7 +35,7 @@ button {
     min-width: 64px;
 }
 
-button:hover {
+.button:hover {
     background-color: rgba(85, 166, 246, 0.3);
     border-color: #9CCCFC;
 }

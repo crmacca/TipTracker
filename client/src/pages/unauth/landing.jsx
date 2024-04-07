@@ -1,4 +1,11 @@
-const LandingPage = () => {
+import { useEffect } from "react"
+
+const LandingPage = ({user}) => {
+
+    useEffect(() => {
+        if(user !== null && user !== 'loading') window.location.pathname = '/dash'
+    }, [user])
+
     return (
         <div className="flex items-center flex-col m-auto p-20 gap-2 font-inter justify-center min-h-screen">
             <img alt='TipTracker brand logo' className="smLogo rounded-3xl border-2 border-gray-500 border-opacity-40" src='logoSM.png'/>
@@ -9,14 +16,14 @@ const LandingPage = () => {
                 Please select an option.
             </p>
             <div className="flex gap-2 items-center mt-5">
-                <button onClick={() => window.location.pathname = '/signin'} className="font-inter">
+                <button onClick={() => window.location.pathname = '/signin'} className="button font-inter">
                     Sign In
                 </button>
-                <button onClick={() => window.location.pathname = '/signup'} className="font-inter">
+                <button onClick={() => window.location.pathname = '/signup'} className="button font-inter">
                     Sign Up
                 </button>
             </div>
-            <h1 className="fixed w-full text-center bottom-0 left-0 text-gray-400 text-md mb-2">
+            <h1 className="fixed w-full text-center bottom-0 left-0 text-gray-400 text-md pb-2 bgMain">
                 This is a private app, not intended for public use / not documented. <br/> © 2024 Christian McNamara
             </h1>
         </div>

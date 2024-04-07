@@ -11,7 +11,7 @@ module.exports = (passport) => {
         if (!user) {
           return done(null, false, { message: 'Details provided don\'t match out records.' });
         }
-        const isValid = await bcrypt.compare(password, user.password);
+        const isValid = await bcrypt.compare(password, user.passwordHash);
         if (!isValid) {
           return done(null, false, { message: 'Details provided don\'t match out records.' });
         }

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react"
 import Input from "../../components/Input"
-import toast from "react-hot-toast"
 import axios from "axios"
+import toast from "react-hot-toast"
 
-const SignInPage = ({user}) => {
+const SignUpPage = ({user}) => {
     const [errors, setErrors] = useState({})
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false) 
 
     function submit(e) {
         e.preventDefault()
@@ -16,7 +16,7 @@ const SignInPage = ({user}) => {
 
         let validationErr = false // Used to determine if there was any validation errors
         let errs = {}
-        
+
         if(e.target[0].value.length === 0) {
             errs = {...errs, username: 'Username cannot be empty.'}
             validationErr = true
@@ -32,37 +32,48 @@ const SignInPage = ({user}) => {
             validationErr = true
         }
 
+        if(e.target[1].value !== e.target[2].value) {
+            errs = {...errs, password: 'Passwords do not match.'}
+            validationErr = true
+        }
         setErrors(errs)
-
+        
         if(validationErr) return setLoading(false)
 
-        axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, {
+        axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/signup`, {
             username: e.target[0].value,
             password: e.target[1].value
         })
-        .then((res) => {
-            toast.success('Successfully logged in!')
-            window.location.pathname = '/dash'
+        .then(res => {
+            toast.success('Account created successfully!')
             setLoading(false)
+            window.location.pathname = '/dash'
         })
         .catch((err) => {
             setLoading(false)
             console.error(err)
-            
             if(err.response.status === 400) {
-                if(err.response.data === 'NO_CREDENTIAL_COMBO_FOUND') {
-                    setErrors({generic: 'No user found with those credentials.'})
-                    toast.error('No user found with those credentials.')
+                if(err.response.data === 'USERNAME_TOO_LONG') {
+                    setErrors({username: 'Username must be less than 30 characters.'})
+                } else if(err.response.data === 'PASSWORD_TOO_SHORT') {
+                    setErrors({password: 'Password must be at least 4 characters.'})
+                } else if(err.response.data === 'PASSWORD_TOO_LONG') {
+                    setErrors({password: 'Password must be less than 300 characters.'})
+                } else if(err.response.data === 'ALREADY_EXISTS') {
+                    setErrors({username: 'An account with that username already exists.'})
                 }
             } else {
-                setErrors({generic: 'An unknown error occurred. Please try again later.'})
+                toast.error('An error occurred. Please try again later.')
+                setErrors({generic: 'An error occurred. Please try again later.'})
             }
         })
-
     }
 
     useEffect(() => {
-        if(user !== null && user !== 'loading') window.location.pathname = '/dash'
+        if(user !== null && user !== 'loading') {
+            toast.error('You must be logged out to view this page!')
+            window.location.pathname = '/'
+        }
     }, [user])
 
     return (
@@ -72,7 +83,7 @@ const SignInPage = ({user}) => {
                 TipTracker
             </h1>
             <p className="font-inter text-white font-regular text-xl">
-                Please login to continue!
+                Please fill out your details to create an account.
             </p>
             {
                 errors.generic && (
@@ -87,31 +98,32 @@ const SignInPage = ({user}) => {
                         Username
                     </p>
                     {
-                        errors.username && (
+                     errors.username && (
                         <p className="font-inter text-red-400">
                             {errors.username}
                         </p>
-                        )   
+                     )   
                     }
                     <Input type='text' placeholder='Username'/>
                     <p className="font-inter text-white">
                         Password
                     </p>
                     {
-                        errors.password && (
+                     errors.password && (
                         <p className="font-inter text-red-400">
                             {errors.password}
                         </p>
-                        )   
+                     )   
                     }
                     <Input type='password' placeholder='Password'/>
+                    <Input type='password' placeholder='Confirm Password'/>
                     <button type="submit" className="button font-inter min-w-full mt-2">
-                        Sign In
+                        Create an Account
                     </button>
-                    <a href='/signup' className="mt-2 font-inter text-sm underline cursor-pointer text-white" onClick={() => {
-                        window.location.pathname = '/signup'
+                    <a href='/signin' className="mt-2 font-inter text-sm underline cursor-pointer text-white" onClick={() => {
+                        window.location.pathname = '/signin'
                     }}>
-                        Create an account instead?
+                        Already have an account? Login instead
                     </a>
                 </form>
             </div>
@@ -122,4 +134,4 @@ const SignInPage = ({user}) => {
     )
 }
 
-export default SignInPage
+export default SignUpPage

@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id               String           @id @default(uuid())
-  username         String           @unique
+  username         String           @unique @db.VarChar(30)
   passwordHash     String
   groupMemberships GroupMembership[]  // Many-to-many relationship with Group
   gameMemberships  GameMembership[]   // Many-to-many relationship with Game
