@@ -42,6 +42,7 @@ const DashboardPage = ({user}) => {
 
 
                             <BottomNavigation
+                                sx={{background: 'none', fontFamily: 'Inter, sans-serif'}}
                                 showLabels
                                 value={page}
                                 onChange={(_, newValue) => {
