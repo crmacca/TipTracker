@@ -10,11 +10,19 @@ router.get('/', checkAuthenticated, async (req, res) => {
     
             const groups = await prisma.group.findMany({ //Find all groups
                 where: {
-                    members: {
-                        some: {
-                            userId: req.user.id
+                    OR: [
+                        {
+                            members: {
+                                some: {
+                                    userId: req.user.id
+                                }
+                            }
+                        },
+                        {
+                            ownerId: req.user.id
                         }
-                    }
+                    ]
+
                 }
             });
     

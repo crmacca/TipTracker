@@ -38,7 +38,12 @@ function App() {
     
     },
     {
-      path: 'dash',
+      path: 'dashboard',
+      element: <DashboardPage user={user} />,
+      errorElement: <ErrorPage />
+    },
+    {
+      path: 'options',
       element: <DashboardPage user={user} />,
       errorElement: <ErrorPage />
     }

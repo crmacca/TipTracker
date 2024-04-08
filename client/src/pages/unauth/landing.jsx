@@ -3,7 +3,7 @@ import { useEffect } from "react"
 const LandingPage = ({user}) => {
 
     useEffect(() => {
-        if(user !== null && user !== 'loading') window.location.pathname = '/dash'
+        if(user !== null && user !== 'loading') window.location.pathname = '/dashboard'
     }, [user])
 
     return (

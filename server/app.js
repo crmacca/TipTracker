@@ -62,6 +62,6 @@ app.get('/ping', (req, res) => {
 
 // Use your auth routes here, ensure they are protected with CSRF if they change state
 app.use('/auth', require('./routes/authRoutes'));
-app.use('/group', require('./routes/groupRoutes'));
+app.use('/groups', require('./routes/groupRoutes'));
 
 module.exports = app;

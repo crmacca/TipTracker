@@ -1,14 +1,24 @@
-import { useEffect } from "react"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import {toast} from "react-hot-toast"
 
 const GroupsPage = ({page, setLoading, user}) => {
+    const [groups, setGroups] = useState([])
 
     useEffect(() => {
-        console.log(page)
         if(page === 0) {
-            setTimeout(() => {
-                setLoading(false)
-            }
-            , 1000)
+            axios.get(`${process.env.REACT_APP_BACKEND_URL}/groups`)
+            .then((res) => {
+                if(res.data.success) {
+                    setGroups(res.data.groups)
+                    setLoading(false)
+                }
+            })
+            .catch((err) => {
+                console.error(err)
+                toast.error('Failed to get groups from server.')
+                window.location.pathname = '/servererr'
+            })
         }
     }, [page]) // Rerun function every time page number in parent element changes, check if page is current then handle loading.
     
@@ -24,12 +34,13 @@ const GroupsPage = ({page, setLoading, user}) => {
             </div>
 
             <div className="flex flex-col gap-3 py-2">
-                <button className="text-start button font-inter">
-                    Friday Nights
-                </button>
-                <button className="text-start button font-inter">
-                    The Occasional Tip Game
-                </button>
+                {
+                    groups.map((group) => (
+                        <button key={group.id} className="text-start button font-inter">
+                            {group.name}
+                        </button>
+                    ))
+                }
             </div>
         </div>
     )

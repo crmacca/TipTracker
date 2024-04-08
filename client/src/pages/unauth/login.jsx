@@ -42,7 +42,7 @@ const SignInPage = ({user}) => {
         })
         .then((res) => {
             toast.success('Successfully logged in!')
-            window.location.pathname = '/dash'
+            window.location.pathname = '/dashboard'
             setLoading(false)
         })
         .catch((err) => {
@@ -62,7 +62,7 @@ const SignInPage = ({user}) => {
     }
 
     useEffect(() => {
-        if(user !== null && user !== 'loading') window.location.pathname = '/dash'
+        if(user !== null && user !== 'loading') window.location.pathname = '/dashboard'
     }, [user])
 
     return (

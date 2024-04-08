@@ -10,11 +10,19 @@ import GroupsPage from "./groups";
 const DashboardPage = ({user}) => {
 
     const [page, setPage] = useState(0)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         if(user === null) window.location.pathname = '/signin'
     }, [user])
+
+    useEffect(() => {
+        if(window.location.pathname === '/dashboard') {
+            setPage(0)
+        } else if(window.location.pathname === '/options') {
+            setPage(1)
+        }
+    }, [])
     
 
     useEffect(() => {
@@ -59,7 +67,7 @@ const DashboardPage = ({user}) => {
 
                                 {
                                     page === 0 && (
-                                        <div className={loading && 'hidden'}>
+                                        <div className={loading ? 'hidden' : 'block'}>
                                             <GroupsPage page={page} setLoading={setLoading} user={user} />
                                         </div>
                                     )
@@ -76,6 +84,12 @@ const DashboardPage = ({user}) => {
                                            if(page !== newValue) {
                                             setLoading(true);
                                             setPage(newValue);
+
+                                            if(newValue === 0) {
+                                                window.history.replaceState(null, null, "/dashboard")
+                                            } else if(newValue === 1) {
+                                                window.history.replaceState(null, null, "/options")
+                                            }
                                            }
                                         }}
                                     >

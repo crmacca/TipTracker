@@ -47,7 +47,7 @@ const SignUpPage = ({user}) => {
         .then(res => {
             toast.success('Account created successfully!')
             setLoading(false)
-            window.location.pathname = '/dash'
+            window.location.pathname = '/dashboard'
         })
         .catch((err) => {
             setLoading(false)
