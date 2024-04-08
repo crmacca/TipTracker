@@ -24,11 +24,11 @@ const GroupsPage = ({page, setLoading, user}) => {
             </div>
 
             <div className="flex flex-col gap-3 py-2">
-                <button className="button font-inter">
+                <button className="text-start button font-inter">
                     Friday Nights
                 </button>
-                <button className="button font-inter">
-                    Friday Nights
+                <button className="text-start button font-inter">
+                    The Occasional Tip Game
                 </button>
             </div>
         </div>
