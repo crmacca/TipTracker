@@ -10,6 +10,7 @@ import { Toaster } from 'react-hot-toast';
 import DashboardPage from './pages/auth/dashboard';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
+import GroupPage from './pages/auth/group';
 
 function App() {
   const [user, setUser] = React.useState('loading')
@@ -40,6 +41,11 @@ function App() {
     {
       path: 'dashboard',
       element: <DashboardPage user={user} />,
+      errorElement: <ErrorPage />
+    },
+    {
+      path: 'group/:id',
+      element: <GroupPage user={user} />,
       errorElement: <ErrorPage />
     },
     {

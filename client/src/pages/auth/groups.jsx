@@ -30,7 +30,7 @@ const GroupsPage = ({page, setLoading, loading, user}) => {
                 window.location.pathname = '/servererr'
             })
         }
-    }, [page]) // Rerun function every time page number in parent element changes, check if page is current then handle loading.
+    }, [page, setLoading]) // Rerun function every time page number in parent element changes, check if page is current then handle loading.
 
     function createGroup(e) {
         e.preventDefault();
@@ -104,7 +104,7 @@ const GroupsPage = ({page, setLoading, loading, user}) => {
             <div className="flex flex-col gap-3 py-2">
                 {
                     groups.map((group) => (
-                        <button key={group.id} className="text-start button font-inter">
+                        <button onClick={() => window.location.pathname = `/group/${group.id}`} key={group.id} className="text-start button font-inter">
                             {group.name}
                         </button>
                     ))
