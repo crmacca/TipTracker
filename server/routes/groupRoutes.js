@@ -38,8 +38,8 @@ router.post('/new', checkAuthenticated, async (req, res) => {
 
     const { name } = req.body;
 
-    if (!name) { //Gathers all body paramaters into variables
-        return res.status(400).json({ success: false, message: 'Name, description and members are required' });
+    if (!name || name.length > 30) { //Gathers all body paramaters into variables
+        return res.status(400).json({ success: false, message: 'Invalid Parameters' });
     }
 
     try {
@@ -47,11 +47,7 @@ router.post('/new', checkAuthenticated, async (req, res) => {
         const newGroup = await prisma.group.create({ //Create group
             data: {
                 name: name,
-                members: {
-                    connect: {
-                        userId: req.user.id
-                    }
-                }
+                ownerId: req.user.id,
             }
         });
 

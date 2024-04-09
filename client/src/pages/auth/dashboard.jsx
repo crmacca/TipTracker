@@ -35,7 +35,7 @@ const DashboardPage = ({user}) => {
         }
     }, [page])
 
-    return (
+    return user !== null && (
         <div>
             {
                 user === 'loading' ? (
@@ -68,7 +68,7 @@ const DashboardPage = ({user}) => {
                                 {
                                     page === 0 && (
                                         <div className={loading ? 'hidden' : 'block'}>
-                                            <GroupsPage page={page} setLoading={setLoading} user={user} />
+                                            <GroupsPage page={page} setLoading={setLoading} loading={loading} user={user} />
                                         </div>
                                     )
                                 }
